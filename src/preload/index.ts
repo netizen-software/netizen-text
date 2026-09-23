@@ -6,7 +6,7 @@ import type {
   FileDocument,
   FileResult,
   FileWriteRequest,
-  NetizenTextApi
+  NetizenTextApi,
 } from '../shared/ipc-contract'
 
 const subscribe = <T>(channel: string, callback: (value: T) => void): (() => void) => {
@@ -16,17 +16,20 @@ const subscribe = <T>(channel: string, callback: (value: T) => void): (() => voi
 }
 
 const api: NetizenTextApi = {
-  openFile: () => ipcRenderer.invoke(IPC_CHANNELS.openFile) as Promise<FileResult<FileDocument | null>>,
+  openFile: () =>
+    ipcRenderer.invoke(IPC_CHANNELS.openFile) as Promise<FileResult<FileDocument | null>>,
   openFileFromPath: (filePath) =>
     ipcRenderer.invoke(IPC_CHANNELS.openFromPath, filePath) as Promise<FileResult<FileDocument>>,
   saveFile: (request: FileWriteRequest) =>
     ipcRenderer.invoke(IPC_CHANNELS.saveFile, request) as Promise<FileResult<FileDocument>>,
   saveFileAs: (contents, defaultPath) =>
-    ipcRenderer.invoke(IPC_CHANNELS.saveFileAs, contents, defaultPath) as Promise<FileResult<FileDocument | null>>,
+    ipcRenderer.invoke(IPC_CHANNELS.saveFileAs, contents, defaultPath) as Promise<
+      FileResult<FileDocument | null>
+    >,
   onFileOpenRequested: (callback) => subscribe<string>(IPC_CHANNELS.requestOpenFile, callback),
   onEditorCommand: (callback) => subscribe<EditorCommand>(IPC_CHANNELS.editorCommand, callback),
   onWindowCloseRequested: (callback) => subscribe(IPC_CHANNELS.requestWindowClose, callback),
-  allowWindowClose: () => ipcRenderer.send(IPC_CHANNELS.allowWindowClose)
+  allowWindowClose: () => ipcRenderer.send(IPC_CHANNELS.allowWindowClose),
 }
 
 contextBridge.exposeInMainWorld('netizenText', api)

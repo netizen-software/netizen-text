@@ -6,7 +6,7 @@ export const IPC_CHANNELS = {
   requestOpenFile: 'file:open-request',
   editorCommand: 'editor:command',
   requestWindowClose: 'window:request-close',
-  allowWindowClose: 'window:allow-close'
+  allowWindowClose: 'window:allow-close',
 } as const
 
 export type EditorCommand = 'open' | 'save' | 'save-as' | 'close' | 'find' | 'replace'
