@@ -1,0 +1,11 @@
+appId: org.netizensoftware.netizentext
+productName: Netizen Text Editor
+directories:
+  output: release
+files:
+  - out/**
+linux:
+  target:
+    - AppImage
+  category: Utility
+  artifactName: ${productName}-${version}.${ext}
