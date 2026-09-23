@@ -13,7 +13,6 @@ export const createMainWindow = (): BrowserWindow => {
     minWidth: 720,
     minHeight: 500,
     backgroundColor: '#17191d',
-    autoHideMenuBar: false,
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'),
       contextIsolation: true,

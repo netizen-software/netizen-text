@@ -115,6 +115,26 @@ body {
 .editor-host {
   min-height: 0;
 }
+.cm-scroller {
+  scrollbar-color: #4d5a48 #17191d;
+  scrollbar-width: thin;
+}
+.cm-scroller::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+.cm-scroller::-webkit-scrollbar-track {
+  background: #17191d;
+}
+.cm-scroller::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  background: #4d5a48;
+  border: 3px solid #17191d;
+  border-radius: 6px;
+}
+.cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: #72826c;
+}
 .statusbar {
   padding: 0 18px;
   color: #818a82;

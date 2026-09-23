@@ -1,6 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu } from 'electron'
 import { registerFileIpc, findFileArgument } from './ipc/file'
-import { createApplicationMenu } from './menu'
 import { closeMainWindow, createMainWindow } from './window'
 import { IPC_CHANNELS } from '../shared/ipc-contract'
 
@@ -41,7 +40,7 @@ app.whenReady().then(async () => {
       pendingFilePath = undefined
     }
   })
-  createApplicationMenu()
+  Menu.setApplicationMenu(null)
   createMainWindow()
 
   const filePath = await findFileArgument(process.argv)
