@@ -158,6 +158,27 @@ document.querySelectorAll<HTMLButtonElement>('[data-command]').forEach((button) 
   button.addEventListener('click', () => runCommand(button.dataset.command as EditorCommand))
 })
 
+document.addEventListener('keydown', (event) => {
+  if (!(event.ctrlKey || event.metaKey)) {
+    return
+  }
+
+  const commandByKey: Record<string, EditorCommand> = {
+    o: 'open',
+    s: event.shiftKey ? 'save-as' : 'save',
+    w: 'close',
+    f: 'find',
+    h: 'replace',
+  }
+  const command = commandByKey[event.key.toLowerCase()]
+  if (command === undefined) {
+    return
+  }
+
+  event.preventDefault()
+  runCommand(command)
+})
+
 document.addEventListener('contextmenu', (event) => event.preventDefault())
 window.netizenText.onEditorCommand(runCommand)
 window.netizenText.onFileOpenRequested((path) => void openFileFromPath(path))
