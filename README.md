@@ -13,11 +13,12 @@ A minimal text editor for Fedora and Ubuntu built with TypeScript, Electron, and
 
 ## Requirements
 
-- Linux (Fedora or Ubuntu)
-- Node.js 24.21.0 for development and CI
-- npm 11 or newer, bundled with Node.js 24
+- Fedora `>= 26` or Ubuntu `>= 17.10`
+- Node.js `24.21.0` (minimum: `22.12.0`)
 
 Electron 44.4.5 embeds Node.js 24.21.0 for the packaged application runtime.
+
+*Note: This project was tested on Ubuntu 24.04 LTS*
 
 ## Run In Development
 
@@ -64,8 +65,8 @@ The generated artifact is written to `release/` and is intentionally excluded fr
 Run the AppImage directly, optionally passing a file path:
 
 ```sh
-./release/Netizen\ Text\ Editor-0.1.0.AppImage
-./release/Netizen\ Text\ Editor-0.1.0.AppImage /path/to/file.txt
+./release/Netizen-Text-Editor-0.1.0.AppImage
+./release/Netizen-Text-Editor-0.1.0.AppImage /path/to/file.txt
 ```
 
 ## Test And Validate

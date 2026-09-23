@@ -1,5 +1,5 @@
 appId: org.netizensoftware.netizentext
-productName: Netizen Text Editor
+productName: Netizen-Text-Editor
 directories:
   output: release
 files:
