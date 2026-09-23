@@ -23,6 +23,7 @@
   "devDependencies": {
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.58.2",
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
@@ -33,6 +34,7 @@
     "eslint": "^9.39.1",
     "prettier": "^3.8.2",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.1",
     "vite": "^7.2.6",
     "vitest": "^4.0.8"
   },
