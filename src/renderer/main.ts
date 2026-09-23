@@ -162,6 +162,7 @@ document.addEventListener('contextmenu', (event) => event.preventDefault())
 window.netizenText.onEditorCommand(runCommand)
 window.netizenText.onFileOpenRequested((path) => void openFileFromPath(path))
 window.netizenText.onWindowCloseRequested(closeWindow)
+window.netizenText.notifyRendererReady()
 
 createIcons({ icons })
 updateDocumentTitle()

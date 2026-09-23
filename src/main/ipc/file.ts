@@ -1,7 +1,7 @@
-import { readFile, stat, writeFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 import { BrowserWindow, dialog, ipcMain } from 'electron'
 import type { OpenDialogOptions } from 'electron'
+import { readTextFile, writeTextFile } from '../file-service'
+export { findFileArgument } from '../file-service'
 import { IPC_CHANNELS } from '../../shared/ipc-contract'
 import type { FileDocument, FileResult, FileWriteRequest } from '../../shared/ipc-contract'
 
@@ -12,39 +12,6 @@ const fileResult = <T>(operation: () => Promise<T>): Promise<FileResult<T>> =>
       ok: false,
       message: error instanceof Error ? error.message : 'The file operation failed.',
     }))
-
-export const readTextFile = async (filePath: string): Promise<FileDocument> => ({
-  path: filePath,
-  contents: await readFile(filePath, 'utf8'),
-})
-
-const writeTextFile = async ({ path, contents }: FileWriteRequest): Promise<FileDocument> => {
-  if (path.length === 0) {
-    throw new Error('A file path is required.')
-  }
-
-  await writeFile(path, contents, 'utf8')
-  return { path, contents }
-}
-
-export const findFileArgument = async (arguments_: string[]): Promise<string | undefined> => {
-  for (const argument of arguments_.slice(1)) {
-    if (argument.startsWith('-')) {
-      continue
-    }
-
-    const filePath = resolve(argument)
-    try {
-      if ((await stat(filePath)).isFile()) {
-        return filePath
-      }
-    } catch {
-      continue
-    }
-  }
-
-  return undefined
-}
 
 export const registerFileIpc = (): void => {
   ipcMain.handle(IPC_CHANNELS.openFile, async (): Promise<FileResult<FileDocument | null>> => {

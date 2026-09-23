@@ -27,6 +27,7 @@ const api: NetizenTextApi = {
       FileResult<FileDocument | null>
     >,
   onFileOpenRequested: (callback) => subscribe<string>(IPC_CHANNELS.requestOpenFile, callback),
+  notifyRendererReady: () => ipcRenderer.send(IPC_CHANNELS.rendererReady),
   onEditorCommand: (callback) => subscribe<EditorCommand>(IPC_CHANNELS.editorCommand, callback),
   onWindowCloseRequested: (callback) => subscribe(IPC_CHANNELS.requestWindowClose, callback),
   allowWindowClose: () => ipcRenderer.send(IPC_CHANNELS.allowWindowClose),
