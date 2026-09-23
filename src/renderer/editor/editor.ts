@@ -69,10 +69,7 @@ const createSearchPanel = (view: EditorView) => {
     }
   }
 
-  findInput.addEventListener('input', () => {
-    commitQuery()
-    findNext(view)
-  })
+  findInput.addEventListener('input', commitQuery)
   replaceInput.addEventListener('input', commitQuery)
   caseSensitive.addEventListener('change', commitQuery)
 
