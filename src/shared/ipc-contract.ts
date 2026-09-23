@@ -4,6 +4,7 @@ export const IPC_CHANNELS = {
   saveFileAs: 'file:save-as',
   openFromPath: 'file:open-from-path',
   requestOpenFile: 'file:open-request',
+  rendererReady: 'renderer:ready',
   editorCommand: 'editor:command',
   requestWindowClose: 'window:request-close',
   allowWindowClose: 'window:allow-close',
@@ -29,6 +30,7 @@ export interface NetizenTextApi {
   saveFile: (request: FileWriteRequest) => Promise<FileResult<FileDocument>>
   saveFileAs: (contents: string, defaultPath?: string) => Promise<FileResult<FileDocument | null>>
   onFileOpenRequested: (callback: (filePath: string) => void) => () => void
+  notifyRendererReady: () => void
   onEditorCommand: (callback: (command: EditorCommand) => void) => () => void
   onWindowCloseRequested: (callback: () => void) => () => void
   allowWindowClose: () => void

@@ -1,0 +1,6 @@
+ASCII line
+ASCII line
+Café and é
+Привет
+Unicode text
+Текст с эмодзи 🚀

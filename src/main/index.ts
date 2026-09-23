@@ -5,6 +5,8 @@ import { closeMainWindow, createMainWindow } from './window'
 import { IPC_CHANNELS } from '../shared/ipc-contract'
 
 const gotSingleInstanceLock = app.requestSingleInstanceLock()
+let rendererReady = false
+let pendingFilePath: string | undefined
 
 if (!gotSingleInstanceLock) {
   app.quit()
@@ -12,20 +14,13 @@ if (!gotSingleInstanceLock) {
 
 const openFileInWindow = (filePath: string): void => {
   const window = BrowserWindow.getAllWindows()[0]
-  if (window === undefined) {
+  if (window === undefined || !rendererReady) {
+    pendingFilePath = filePath
     return
   }
 
-  const sendOpenRequest = (): void => {
-    window.webContents.send(IPC_CHANNELS.requestOpenFile, filePath)
-    window.focus()
-  }
-
-  if (window.webContents.isLoading()) {
-    window.webContents.once('did-finish-load', sendOpenRequest)
-  } else {
-    sendOpenRequest()
-  }
+  window.webContents.send(IPC_CHANNELS.requestOpenFile, filePath)
+  window.focus()
 }
 
 app.on('second-instance', (_event, commandLine) => {
@@ -39,6 +34,13 @@ app.on('second-instance', (_event, commandLine) => {
 app.whenReady().then(async () => {
   registerFileIpc()
   ipcMain.on(IPC_CHANNELS.allowWindowClose, closeMainWindow)
+  ipcMain.on(IPC_CHANNELS.rendererReady, (event) => {
+    rendererReady = true
+    if (pendingFilePath !== undefined) {
+      event.sender.send(IPC_CHANNELS.requestOpenFile, pendingFilePath)
+      pendingFilePath = undefined
+    }
+  })
   createApplicationMenu()
   createMainWindow()
 
