@@ -16,10 +16,11 @@ test('opens a terminal file, replaces text, saves, and closes the document', asy
     await expect(window.locator('.cm-content')).toContainText('Caf\u00e9 and \u00e9')
 
     await window.getByLabel('Find and replace').click()
-    await window.locator('[data-search-find]').fill('Unicode')
-    await window.locator('[data-search-replace]').fill('Unicode text')
+    await window.locator('[data-search-find]').pressSequentially('Café')
+    await window.locator('[data-search-replace]').pressSequentially('Coffee')
     await window.getByRole('button', { name: 'Replace All' }).click()
-    await expect(window.locator('.cm-content')).toContainText('Unicode text')
+    await expect(window.locator('.cm-content')).toContainText('Coffee and Coffee')
+    await expect(window.locator('.cm-content')).not.toContainText('Café')
     await window.screenshot({ path: resolve(testResultsDirectory, 'editor-workflow.png') })
 
     await window.locator('.cm-content').click()

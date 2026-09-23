@@ -14,6 +14,7 @@ import {
   setSearchQuery,
 } from '@codemirror/search'
 import { EditorView, keymap } from '@codemirror/view'
+import type { ViewUpdate } from '@codemirror/view'
 
 type ChangeListener = (contents: string) => void
 
@@ -27,6 +28,7 @@ const createButton = (label: string, onClick: () => void): HTMLButtonElement => 
 }
 
 const createSearchPanel = (view: EditorView) => {
+  let query = getSearchQuery(view.state)
   const panel = document.createElement('form')
   panel.className = 'search-panel'
   panel.addEventListener('submit', (event) => {
@@ -55,42 +57,42 @@ const createSearchPanel = (view: EditorView) => {
   caseLabel.htmlFor = caseSensitive.id
   caseLabel.append(caseSensitive, 'Match case')
 
-  const updateQuery = (): void => {
-    view.dispatch({
-      effects: setSearchQuery.of(
-        new SearchQuery({
-          search: findInput.value,
-          replace: replaceInput.value,
-          caseSensitive: caseSensitive.checked,
-        }),
-      ),
+  const commitQuery = (): void => {
+    const nextQuery = new SearchQuery({
+      search: findInput.value,
+      replace: replaceInput.value,
+      caseSensitive: caseSensitive.checked,
     })
+    if (!nextQuery.eq(query)) {
+      query = nextQuery
+      view.dispatch({ effects: setSearchQuery.of(query) })
+    }
   }
 
   findInput.addEventListener('input', () => {
-    updateQuery()
+    commitQuery()
     findNext(view)
   })
-  replaceInput.addEventListener('input', updateQuery)
-  caseSensitive.addEventListener('change', updateQuery)
+  replaceInput.addEventListener('input', commitQuery)
+  caseSensitive.addEventListener('change', commitQuery)
 
   const controls = document.createElement('div')
   controls.className = 'search-controls'
   controls.append(
     createButton('Previous', () => {
-      updateQuery()
+      commitQuery()
       findPrevious(view)
     }),
     createButton('Next', () => {
-      updateQuery()
+      commitQuery()
       findNext(view)
     }),
     createButton('Replace', () => {
-      updateQuery()
+      commitQuery()
       replaceNext(view)
     }),
     createButton('Replace All', () => {
-      updateQuery()
+      commitQuery()
       replaceAll(view)
     }),
     createButton('Close', () => {
@@ -101,19 +103,28 @@ const createSearchPanel = (view: EditorView) => {
 
   panel.append(findInput, replaceInput, caseLabel, controls)
 
-  const syncQuery = (): void => {
-    const query = getSearchQuery(view.state)
-    if (findInput.value !== query.search) {
-      findInput.value = query.search
-    }
-    if (replaceInput.value !== query.replace) {
-      replaceInput.value = query.replace
-    }
+  const setQuery = (nextQuery: SearchQuery): void => {
+    query = nextQuery
+    findInput.value = query.search
+    replaceInput.value = query.replace
     caseSensitive.checked = query.caseSensitive
   }
 
-  syncQuery()
-  return { dom: panel, top: true, mount: () => findInput.focus(), update: syncQuery }
+  setQuery(query)
+  return {
+    dom: panel,
+    top: true,
+    mount: () => findInput.focus(),
+    update: (update: ViewUpdate) => {
+      for (const transaction of update.transactions) {
+        for (const effect of transaction.effects) {
+          if (effect.is(setSearchQuery) && !effect.value.eq(query)) {
+            setQuery(effect.value)
+          }
+        }
+      }
+    },
+  }
 }
 
 export class TextEditor {
