@@ -2,6 +2,8 @@
   "name": "netizen-text",
   "version": "0.1.0",
   "description": "A minimal Linux text editor built with TypeScript and Electron.",
+  "author": "Netizen Software",
+  "desktopName": "netizen-text",
   "main": "./out/main/index.js",
   "type": "module",
   "engines": {

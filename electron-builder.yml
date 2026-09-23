@@ -8,4 +8,5 @@ linux:
   target:
     - AppImage
   category: Utility
+  syncDesktopName: true
   artifactName: ${productName}-${version}.${ext}
