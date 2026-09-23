@@ -18,8 +18,8 @@ export const createMainWindow = (): BrowserWindow => {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true
-    }
+      sandbox: true,
+    },
   })
 
   window.on('close', (event) => {

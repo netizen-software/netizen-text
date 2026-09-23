@@ -4,6 +4,6 @@ export default defineConfig({
   testDir: './tests/e2e',
   timeout: 30_000,
   use: {
-    trace: 'retain-on-failure'
-  }
+    trace: 'retain-on-failure',
+  },
 })

@@ -13,18 +13,22 @@ export const createApplicationMenu = (): void => {
       submenu: [
         { label: 'Open', accelerator: 'Ctrl+O', click: () => sendEditorCommand('open') },
         { label: 'Save', accelerator: 'Ctrl+S', click: () => sendEditorCommand('save') },
-        { label: 'Save As', accelerator: 'Ctrl+Shift+S', click: () => sendEditorCommand('save-as') },
+        {
+          label: 'Save As',
+          accelerator: 'Ctrl+Shift+S',
+          click: () => sendEditorCommand('save-as'),
+        },
         { type: 'separator' },
-        { label: 'Close File', accelerator: 'Ctrl+W', click: () => sendEditorCommand('close') }
-      ]
+        { label: 'Close File', accelerator: 'Ctrl+W', click: () => sendEditorCommand('close') },
+      ],
     },
     {
       label: 'Edit',
       submenu: [
         { label: 'Find', accelerator: 'Ctrl+F', click: () => sendEditorCommand('find') },
-        { label: 'Replace', accelerator: 'Ctrl+H', click: () => sendEditorCommand('replace') }
-      ]
-    }
+        { label: 'Replace', accelerator: 'Ctrl+H', click: () => sendEditorCommand('replace') },
+      ],
+    },
   ])
 
   Menu.setApplicationMenu(menu)
