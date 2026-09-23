@@ -1,6 +1,8 @@
 # Netizen Text Editor
 
-A minimal text editor for Fedora and Ubuntu built with TypeScript, Electron, and CodeMirror.
+A minimal text editor for Linux built with TypeScript, Electron, and CodeMirror.
+
+<img width="588" alt="image" src="https://github.com/user-attachments/assets/24424a3e-6a69-4b5e-83bc-56917263d882" />
 
 ## Features
 
